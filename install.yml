@@ -22,6 +22,16 @@
       password: "{{ user_password | password_hash('sha512')"
       home: "/home/{{ vde_user }}"
       comment: "{{ vde_user_name }}"
+  
+  - name: Write password file out
+    copy:
+      dest: /var/log/userpw
+      content: |
+        {{ user_password }}
+        
+      owner: root
+      group: root
+      mode: "0600"
 
   - name: Reset mirror for apt repos to mirrors.ubuntu.com
     replace:
