@@ -41,8 +41,8 @@
 
 - name: Define Virtualbox Version to install
   vars:
-    regex_source: ^.*vagrant_([^_]+)_SHA256SUMS.*
-    regex_dest: \1
+    regex_source: '^.*vagrant_([^_]+)_SHA256SUMS.*'
+    regex_dest: '\1'
   set_fact:
     vagrant_version: |
       {% set ns = namespace() %}
