@@ -46,11 +46,11 @@
       {%- for line in (vagrant_source.content | default('') | string).splitlines() -%}
         {%- if 'SHA256SUMS' in line -%}
           {%- if ns.version is not defined -%}
-          {%- set ns.version=line -%}
+            {%- set ns.version=line -%}
           {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
-      {{ ns.version | regex_replace('^.*/vagrant_([^_]+)_SHA256SUMS.*', '\1') }}{%- set dummy='' -%}
+      {{ ns.version | regex_replace('^.*vagrant_([^_]+)_SHA256SUMS.*', '\1') }}{%- set dummy='' -%}
   when: vagrant_version is not defined
 
 - name: Get Vagrant X64 Deb package
