@@ -30,7 +30,8 @@
 
 - name: Execute Certbot
   shell: "certbot certonly --standalone --deploy-hook /etc/letsencrypt/merge_cert.sh -d {{ vde_dns_name }} --register-unsafely-without-email --agree-tos"
-  creates: "/etc/letsencrypt/live/{{ vde_dns_name }}"
+  args:
+    creates: "/etc/letsencrypt/live/{{ vde_dns_name }}"
   when: vde_dns_name is defined
   register: certbot
   failed_when: false
