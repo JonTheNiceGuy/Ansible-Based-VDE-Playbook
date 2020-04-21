@@ -41,7 +41,7 @@
 
 - name: Define Virtualbox Version to install
   set_fact:
-    virtualbox_version: |-
+    vagrant_version: |
       {% set ns = namespace() %}
       {%- for line in (vagrant_source.content | default('') | string).splitlines() -%}
         {%- if 'SHA256SUMS"' in line -%}
@@ -50,7 +50,7 @@
           {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
-      {{ ns.version | regex_replace('^.*/vagrant_([^"]+)_SHA256SUMS".*', '\1') }}
+      {{ ns.version | regex_replace('^.*/vagrant_([^"]+)_SHA256SUMS".*', '\1') }}{%- set dummy='' -%}
   when: vagrant_version is not defined
 
 - name: Get Vagrant X64 Deb package
