@@ -10,7 +10,7 @@
 
 - name: Set public ip naming
   set_fact:
-    vde_dns_name: "{{ public_ip.content + '.' + vde_dns_suffix | default('nip.io')) }}"
+    vde_dns_name: "{{ public_ip.content + '.' + (vde_dns_suffix | default('nip.io')) }}"
   when: vde_dns_name is not defined and public_ip.content is defined and public_ip.content != ''
 
 - name: Install XRDP packages
