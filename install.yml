@@ -19,7 +19,7 @@
       groups: adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,lxd,netdev
       append: yes
       skeleton: /etc/skel/
-      password: "{{ user_password | password_hash('sha512')"
+      password: "{{ user_password | password_hash('sha512') }}"
       home: "/home/{{ vde_user }}"
       comment: "{{ vde_user_name }}"
   
