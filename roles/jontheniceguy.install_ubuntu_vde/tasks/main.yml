@@ -1,0 +1,31 @@
+---
+- name: Install packages
+  apt:
+    name: ubuntu-desktop
+    state: present
+
+- name: Fix colord issue
+  copy:
+    src: ../files/45-allow.colord.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla
+
+- name: Create config directory
+  file:
+    path: "/home/{{ vde_user }}/.config"
+    state: directory
+    owner: "{{ vde_user }}"
+    group: "{{ vde_user }}"
+
+- name: Setup desktop script
+  copy:
+    src: ../files/desktop_settings
+    dest: /tmp/desktop_settings
+
+- name: Configure Desktop
+  become_user: "{{ vde_user }}"
+  become: true
+  shell: dbus-launch --exit-with-session bash /tmp/desktop_settings
+  register: _result
+  until: _result.rc == 0
+  retries: 240 # retry X times
+  delay: 5 # pause for X sec b/w each call

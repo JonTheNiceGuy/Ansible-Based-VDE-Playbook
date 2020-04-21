@@ -1,0 +1,48 @@
+---
+# Based on https://stackoverflow.com/a/54142104
+- name: Find my public ip
+  uri: 
+    url: http://ifconfig.me/ip
+    return_content: yes
+  register: public_ip
+  failed_when: false
+  when: vde_dns_name is not defined
+
+- name: Set public ip naming
+  set_fact:
+    vde_dns_name: "{{ public_ip.content + '.' + vde_dns_suffix | default('nip.io')) }}"
+  when: vde_dns_name is not defined and public_ip.content is defined and public_ip.content != ''
+
+- name: Install XRDP packages
+  apt:
+    name:
+    - xrdp
+    - certbot
+    state: present
+
+- name: Setup Certbot Merge Script
+  copy:
+    src: ../files/merge_cert.sh
+    dest: /etc/letsencrypt/merge_cert.sh
+    mode: "0750"
+    owner: root
+    group: root
+
+- name: Execute Certbot
+  shell: "certbot certonly --standalone --deploy-hook /etc/letsencrypt/merge_cert.sh -d {{ vde_dns_name }} --register-unsafely-without-email --agree-tos"
+  creates: "/etc/letsencrypt/live/{{ vde_dns_name }}"
+  when: vde_dns_name is defined
+  register: certbot
+  failed_when: false
+
+- name: Fix certificate in xrdp
+  replace:
+    path: /etc/xrdp/xrdp.ini
+    regexp: '^{{ item.key }}=.*$' # Works for https://regex101.com/r/eaWr0C/2
+    replace: "{{ item.key }}=/etc/letsencrypt/live/{{ vde_dns_name }}/{{ item.value }}.pem"
+  loop: 
+  - key: certificate
+    value: fullchain
+  - key: key_file
+    value: privkey
+  when: certbot.rc == 0

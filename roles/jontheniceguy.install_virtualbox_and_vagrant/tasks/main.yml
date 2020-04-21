@@ -1,0 +1,59 @@
+---
+- name: Add VirtualBox Key
+  apt_key: 
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    id: B9F8D658297AF3EFC18D5CDFA2F683C52980AECF
+
+- name: Add VirtualBox Repo
+  apt_repository: 
+    repo: "deb https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+
+- name: Get latest VirtualBox version
+  uri:
+    url: https://download.virtualbox.org/virtualbox/debian/pool/contrib/v/
+    return_content: yes
+  register: virtualbox_source
+  when: virtualbox_version is not defined
+
+- name: Define Virtualbox Version to install
+  set_fact:
+    virtualbox_version: |
+      {% set ns = namespace() %}
+      {%- for line in (virtualbox_source.content | default('') | string).splitlines() -%}
+        {%- if 'virtualbox-' in line -%}
+          {% set ns.version=line %}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ ns.version | regex_replace('^[^"]+"virtualbox-([^"]+)/".*', '\1') }}
+  when: virtualbox_version is not defined
+
+- name: Install VirtualBox
+  apt: 
+    name: "virtualbox-{{ virtualbox_version }}
+    state: latest
+
+- name: Get latest Vagrant version
+  uri:
+    url: https://www.vagrantup.com/downloads.html
+    return_content: yes
+  register: vagrant_source
+  when: vagrant_version is not defined
+
+- name: Define Virtualbox Version to install
+  set_fact:
+    virtualbox_version: |-
+      {% set ns = namespace() %}
+      {%- for line in (vagrant_source.content | default('') | string).splitlines() -%}
+        {%- if 'SHA256SUMS"' in line -%}
+          {%- if ns.version is not defined -%}
+          {%- set ns.version=line -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ ns.version | regex_replace('^.*/vagrant_([^"]+)_SHA256SUMS".*', '\1') }}
+  when: vagrant_version is not defined
+
+- name: Get Vagrant X64 Deb package
+  apt:
+    deb: "https://releases.hashicorp.com/vagrant/{{vagrant_version}}/vagrant_{{vagrant_version}}_x86_64.deb"
+    state: present

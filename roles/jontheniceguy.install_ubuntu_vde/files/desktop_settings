@@ -1,0 +1,7 @@
+#!/bin/bash
+gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'gb')]"
+gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'Sundry', 'YaST']"
+gsettings set org.gnome.desktop.privacy report-technical-problems false
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+gsettings set org.gnome.desktop.session idle-delay 0
+echo yes > $HOME/.config/gnome-initial-setup-done
