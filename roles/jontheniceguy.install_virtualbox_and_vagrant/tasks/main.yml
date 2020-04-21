@@ -44,7 +44,7 @@
     vagrant_version: |
       {% set ns = namespace() %}
       {%- for line in (vagrant_source.content | default('') | string).splitlines() -%}
-        {%- if 'SHA256SUMS"' in line -%}
+        {%- if 'SHA256SUMS' in line -%}
           {%- if ns.version is not defined -%}
           {%- set ns.version=line -%}
           {%- endif -%}
