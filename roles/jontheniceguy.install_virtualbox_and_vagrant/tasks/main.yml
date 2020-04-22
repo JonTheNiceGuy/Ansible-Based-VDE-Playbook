@@ -44,6 +44,9 @@
 - debug:
     msg: "Installing VirtualBox {{ virtualbox_version }} and Vagrant {{ vagrant_version }}"
 
+- debug:
+    msg: "https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb"
+
 - name: Add VirtualBox Key
   apt_key: 
     url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
@@ -58,7 +61,7 @@
     name: "virtualbox-{{ virtualbox_version }}
     state: latest
 
-- name: Get Vagrant X64 Deb package
-  apt:
-    deb: "https://releases.hashicorp.com/vagrant/{{vagrant_version}}/vagrant_{{vagrant_version}}_x86_64.deb"
-    state: present
+# - name: Get Vagrant X64 Deb package
+#   apt:
+#     deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb"
+#     state: present
