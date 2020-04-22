@@ -62,3 +62,21 @@
   - name: Setup Virtualbox and Vagrant
     include_role:
       name: jontheniceguy.install_virtualbox_and_vagrant
+
+  # These two items are based on
+  # https://www.mydailytutorials.com/ansible-delete-multiple-files-directories-ansible/
+  - name: Find files in /var/crash
+    find:
+      paths: /var/crash
+    register: crash_files
+
+  - name: Remove files in /var/crash
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    loop: "{{ crash_files.files }}"
+    loop_control:
+      label: "{{ item.path }}"
+
+  - name: Build complete. Rebooting to tidy up
+    reboot:
