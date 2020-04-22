@@ -38,6 +38,7 @@
       path: /etc/apt/sources.list
       regexp: 'https?://[^/]*archive\.ubuntu\.com/ubuntu/?' # Works for https://regex101.com/r/eaWr0C/2
       replace: 'mirror://mirrors.ubuntu.com/mirrors.txt'
+    when: use_mirror | default(false)
 
   - name: Update OS
     apt:
