@@ -1,0 +1,3 @@
+[submodule "roles/mohclips.guacamole_jumpserver"]
+	path = roles/mohclips.guacamole_jumpserver
+	url = https://github.com/mohclips/guacamole-jumpserver
