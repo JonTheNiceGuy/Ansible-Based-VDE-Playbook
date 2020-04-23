@@ -54,14 +54,22 @@
   - name: Setup XRDP
     include_role:
       name: jontheniceguy.install_xrdp
+    when: install_xrdp | default(false)
+
+  - name: Setup Guacamole
+    include_role:
+      name: mohclips.guacamole_jumpserver
+    when: install_guacamole | default(true)
 
   - name: Setup VSCode
     include_role:
       name: jontheniceguy.install_vscode
+    when: install_vscode | default(false)
   
   - name: Setup Virtualbox and Vagrant
     include_role:
       name: jontheniceguy.install_virtualbox_and_vagrant
+    when: install_vagrant | default(false)
 
   # These two items are based on
   # https://www.mydailytutorials.com/ansible-delete-multiple-files-directories-ansible/
