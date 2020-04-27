@@ -1,12 +1,12 @@
 ---
-- name: Install packages
+- name: Install Packages (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
   apt:
     name: ubuntu-mate-desktop
     state: present
 
 # Pending merge of https://github.com/ansible/ansible/pull/48319
-- name: 
+- name: Install Packages (Redhat,CentOS,Fedora)
   when: ansible_os_family == 'RedHat'
   shell: "dnf --allowerasing -y group install 'Mate Desktop'"
   args:
