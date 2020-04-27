@@ -16,7 +16,12 @@
     user:
       name: "{{ vde_user }}"
       group: "{{ vde_user }}"
-      groups: adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,lxd,netdev
+      groups: |
+        {%- if ansible_distribution == 'Ubuntu' -%}
+          adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,lxd,netdev
+        {%- elif ansible_distribution == 'Fedora' -%}
+          adm,wheel,systemd-journal
+        {%- endif -%}
       append: yes
       skeleton: /etc/skel/
       password: "{{ user_password | password_hash('sha512') }}"
