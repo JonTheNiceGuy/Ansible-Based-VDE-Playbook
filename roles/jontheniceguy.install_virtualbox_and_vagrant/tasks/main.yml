@@ -3,9 +3,9 @@
   include_tasks: version.yml
 
 - name: Load Debian/Ubuntu tasks
-  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
   include_tasks: debian.yml
 
 - name: Load RHEL/CentOS/Fedora tasks
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Fedora' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_os_family == 'RedHat'
   include_tasks: rhel.yml

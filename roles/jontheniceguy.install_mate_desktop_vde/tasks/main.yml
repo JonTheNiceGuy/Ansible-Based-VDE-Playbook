@@ -1,0 +1,18 @@
+---
+- name: Install packages
+  when: ansible_distribution == 'Ubuntu'
+  apt:
+    name: ubuntu-mate-desktop
+    state: present
+
+# Pending merge of https://github.com/ansible/ansible/pull/48319
+- name: 
+  when: ansible_os_family == 'RedHat'
+  shell: "dnf --allowerasing -y group install 'Mate Desktop'"
+  args:
+    warn: false
+
+- name: Fix colord issue
+  copy:
+    src: ../files/45-allow.colord.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla

@@ -42,9 +42,15 @@
     include_tasks: ubuntu.yml
     when: ansible_distribution == 'Ubuntu'
 
-  - name: Load Fedora tasks
-    include_tasks: fedora.yml
-    when: ansible_distribution == 'Fedora'
+  - name: Upgrade all packages
+    when: ansible_os_family == 'RedHat'
+    dnf:
+      name: "*"
+      state: latest
+
+  - name: Setup desktop environment
+    include_role:
+      name: jontheniceguy.install_mate_desktop_vde
 
   - name: Setup XRDP
     include_role:
@@ -80,6 +86,3 @@
     loop: "{{ crash_files.files }}"
     loop_control:
       label: "{{ item.path }}"
-
-  - name: Build complete. Rebooting to tidy up
-    reboot:

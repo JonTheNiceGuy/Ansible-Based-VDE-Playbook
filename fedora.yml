@@ -1,9 +1,0 @@
----
-- name: Upgrade all packages
-  dnf:
-    name: "*"
-    state: latest
-
-- name: Setup desktop environment
-  include_role:
-    name: jontheniceguy.install_fedora_mate_vde

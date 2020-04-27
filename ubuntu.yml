@@ -12,7 +12,3 @@
     upgrade: full
     autoremove: yes
     autoclean: yes
-
-- name: Setup desktop environment
-  include_role:
-    name: jontheniceguy.install_ubuntu_mate_vde

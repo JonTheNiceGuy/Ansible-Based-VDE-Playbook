@@ -1,6 +1,0 @@
----
-# Pending merge of https://github.com/ansible/ansible/pull/48319
-- name: 
-  shell: "dnf --allowerasing -y group install 'Mate Desktop'"
-  args:
-    warn: false
