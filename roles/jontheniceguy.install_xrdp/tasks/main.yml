@@ -1,7 +1,7 @@
 ---
 # Based on https://stackoverflow.com/a/54142104
 - name: Find my public ip
-  uri: 
+  uri:
     url: http://ifconfig.me/ip
     return_content: yes
   register: public_ip
@@ -14,7 +14,7 @@
   when: vde_dns_name is not defined and public_ip.content is defined and public_ip.content != ''
 
 - name: Install XRDP packages
-  apt:
+  package:
     name:
     - xrdp
     - certbot
@@ -41,7 +41,7 @@
     path: /etc/xrdp/xrdp.ini
     regexp: '^{{ item.key }}=.*$' # Works for https://regex101.com/r/eaWr0C/2
     replace: "{{ item.key }}=/etc/letsencrypt/live/{{ vde_dns_name }}/{{ item.value }}.pem"
-  loop: 
+  loop:
   - key: certificate
     value: fullchain
   - key: key_file

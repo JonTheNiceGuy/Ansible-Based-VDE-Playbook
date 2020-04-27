@@ -1,0 +1,14 @@
+---
+- name: Add VSCode Repository
+  yum_repository:
+    name: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Install VSCode
+  dnf:
+    name: code
+    update_cache: yes

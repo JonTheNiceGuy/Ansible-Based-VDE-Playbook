@@ -1,0 +1,18 @@
+---
+- name: Reset mirror for apt repos to mirrors.ubuntu.com
+  replace:
+    path: /etc/apt/sources.list
+    regexp: 'https?://[^/]*archive\.ubuntu\.com/ubuntu/?' # Works for https://regex101.com/r/eaWr0C/2
+    replace: 'mirror://mirrors.ubuntu.com/mirrors.txt'
+  when: use_mirror | default(false)
+
+- name: Update OS
+  apt:
+    update_cache: yes
+    upgrade: full
+    autoremove: yes
+    autoclean: yes
+
+- name: Setup desktop environment
+  include_role:
+    name: jontheniceguy.install_ubuntu_mate_vde

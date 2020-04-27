@@ -1,0 +1,42 @@
+---
+- name: Get latest Vagrant version
+  uri:
+    url: https://www.vagrantup.com/downloads.html
+    return_content: yes
+  register: vagrant_source
+  when: vagrant_versions is not defined
+
+- name: Define Virtualbox Version to install
+  vars:
+    regex_source: '^.*vagrant_([^_]+)_SHA256SUMS.*'
+  set_fact:
+    vagrant_versions: |-
+      {% set ns = namespace() %}
+      {%- for line in (vagrant_source.content | default('') | string).splitlines() -%}
+        {%- if 'SHA256SUMS' in line -%}
+          {%- if ns.version is not defined -%}
+            {%- set ns.version=line -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ ns.version | regex_replace(regex_source, '\1') }}
+  when: vagrant_versions is not defined
+
+- name: Get latest VirtualBox version
+  uri:
+    url: https://download.virtualbox.org/virtualbox/debian/pool/contrib/v/
+    return_content: yes
+  register: virtualbox_source
+  when: virtualbox_versions is not defined
+
+- name: Define Virtualbox Version to install
+  set_fact:
+    virtualbox_versions: |-
+      {% set ns = namespace() %}
+      {%- for line in (virtualbox_source.content | default('') | string).splitlines() -%}
+        {%- if 'virtualbox-' in line -%}
+          {% set ns.version=line %}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ ns.version | regex_replace('^[^"]+"virtualbox-([^"]+)/".*', '\1') }}
+  when: virtualbox_versions is not defined

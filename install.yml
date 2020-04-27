@@ -2,10 +2,10 @@
 - hosts: localhost
   tasks:
   - name: Define user details
-    set_fact: 
+    set_fact:
       user_password: "{{ user_password | default(lookup('password', 'pw.user chars=ascii_letters,digits length=12')) }}"
-      vde_user: "{{ vde_user | default('ubuntu') }}"
-      vde_user_name: "{{ vde_user_name | default('Ubuntu') }}"
+      vde_user: "{{ vde_user | default('someuser') }}"
+      vde_user_name: "{{ vde_user_name | default('Some User') }}"
 
   - name: Create user group
     group:
@@ -22,34 +22,24 @@
       password: "{{ user_password | password_hash('sha512') }}"
       home: "/home/{{ vde_user }}"
       comment: "{{ vde_user_name }}"
-  
+
   - name: Write password file out
     copy:
       dest: /var/log/userpw
       content: |
         {{ user_password }}
-        
+
       owner: root
       group: root
       mode: "0600"
 
-  - name: Reset mirror for apt repos to mirrors.ubuntu.com
-    replace:
-      path: /etc/apt/sources.list
-      regexp: 'https?://[^/]*archive\.ubuntu\.com/ubuntu/?' # Works for https://regex101.com/r/eaWr0C/2
-      replace: 'mirror://mirrors.ubuntu.com/mirrors.txt'
-    when: use_mirror | default(false)
+  - name: Load Ubuntu tasks
+    include_tasks: ubuntu.yml
+    when: ansible_distribution == 'Ubuntu'
 
-  - name: Update OS
-    apt:
-      update_cache: yes
-      upgrade: full
-      autoremove: yes
-      autoclean: yes
-
-  - name: Setup desktop environment
-    include_role:
-      name: jontheniceguy.install_ubuntu_mate_vde
+  - name: Load Fedora tasks
+    include_tasks: fedora.yml
+    when: ansible_distribution == 'Fedora'
 
   - name: Setup XRDP
     include_role:
@@ -65,7 +55,7 @@
     include_role:
       name: jontheniceguy.install_vscode
     when: install_vscode | default(false)
-  
+
   - name: Setup Virtualbox and Vagrant
     include_role:
       name: jontheniceguy.install_virtualbox_and_vagrant

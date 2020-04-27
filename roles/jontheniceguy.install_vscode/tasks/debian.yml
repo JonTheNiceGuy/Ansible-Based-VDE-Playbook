@@ -1,0 +1,10 @@
+---
+- name: Ensure dependencies installed
+  apt:
+    name: xz-utils
+    state: present
+
+- name: Install VSCode
+  apt:
+    deb: https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable
+    state: present

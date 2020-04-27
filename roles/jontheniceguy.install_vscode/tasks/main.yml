@@ -1,10 +1,8 @@
 ---
-- name: Ensure dependencies installed
-  apt:
-    name: xz-utils
-    state: present
+- name: Load Ubuntu tasks
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+  include_tasks: ubuntu.yml
 
-- name: Install VSCode
-  apt:
-    deb: https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable
-    state: present
+- name: Load Fedora tasks
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Fedora' or ansible_distribution == 'Red Hat Enterprise Linux'
+  include_tasks: rhel.yml
