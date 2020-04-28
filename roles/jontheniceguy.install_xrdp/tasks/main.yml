@@ -47,3 +47,45 @@
   - key: key_file
     value: privkey
   when: certbot.rc == 0
+
+- name: Ensure XRDP is started
+  systemd:
+    name: xrdp
+    state: started
+    enabled: yes
+
+- name: Confirm firewalld is installed and running
+  when: ansible_os_family == 'RedHat'
+  shell: systemctl status firewalld && firewall-cmd --state
+  args:
+    warn: false
+  register: firewalld
+
+- name: Permit traffic through the firewall
+  when: 
+  - ansible_os_family == 'RedHat'
+  - firewalld.rc == 0
+  firewalld:
+    port: 3389/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Confirm ufw is installed and running
+  when: ansible_distribution == 'Ubuntu'
+  shell: "systemctl status ufw && ufw status | grep 'Status: active'"
+  args:
+    warn: false
+  register: ufw
+
+- name: Permit traffic through the firewall
+  when:
+  - ansible_distribution == 'Ubuntu'
+  - ufw.rc == 0
+  ufw:
+    direction: in
+    to_port: 3389
+    proto: tcp
+    comment: XRDP
+    log: true
+    rule: allow
