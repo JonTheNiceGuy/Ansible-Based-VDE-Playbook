@@ -1,9 +1,7 @@
 ---
 - name: Install Packages (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
-  apt:
-    name: "{{ os[release].desktop }}^"
-    state: present
+  shell: "apt update && apt install -y {{ os[release].desktop }}^"
 
 - name: Install Classic Snaps (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
