@@ -1,0 +1,55 @@
+---
+- name: Install Packages (Ubuntu)
+  when: ansible_distribution == 'Ubuntu'
+  apt:
+    name: "{{ os[release].desktop }}^"
+    state: present
+
+- name: Install Classic Snaps (Ubuntu)
+  when: ansible_distribution == 'Ubuntu'
+  snap:
+    name: "{{ item }}"
+    classic: yes
+  loop: "{{ os[release].classic }}"
+
+- name: Install Confined Snaps (Ubuntu)
+  when: ansible_distribution == 'Ubuntu'
+  snap:
+    name: "{{ os[release].confined }}"
+
+# Pending merge of https://github.com/ansible/ansible/pull/48319
+- name: Install Packages (Redhat,CentOS,Fedora)
+  when: ansible_os_family == 'RedHat'
+  shell: "dnf --allowerasing -y group install 'Mate Desktop'"
+  args:
+    warn: false
+
+# - name: Fix colord issue
+#   when: os[release].fix_colord | default(false)
+#   copy:
+#     src: ../files/45-allow.colord.pkla
+#     dest: /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla
+
+- name: Setup desktop script
+  when:
+  - os[release].configure_gnome_desktop | default(false)
+  - not oem
+  copy:
+    src: ../files/gnome_desktop_settings
+    dest: /tmp/gnome_desktop_settings
+
+- name: Configure Desktop
+  when:
+  - os[release].configure_gnome_desktop | default(false)
+  - not oem
+  become_user: "{{ vde_user }}"
+  become: true
+  shell: dbus-launch --exit-with-session bash /tmp/gnome_desktop_settings
+  register: _result
+  until: _result.rc == 0
+  retries: 240 # retry X times
+  delay: 5 # pause for X sec b/w each call
+
+- name: Run OEM steps
+  when: oem
+  include_tasks: oem.yml

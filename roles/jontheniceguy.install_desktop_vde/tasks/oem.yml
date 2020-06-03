@@ -1,0 +1,77 @@
+---
+- name: Install whois
+  apt:
+    name: whois
+    state: present
+
+- name: Create OEM group
+  group:
+    name: oem
+    gid: 29999
+    state: present
+
+- name: Create OEM user
+  user:
+    name: oem
+    group: oem
+    groups: sudo
+    password: "{{ ('' + ansible_date_time.month + ansible_date_time.hour + ansible_date_time.minute + ansible_date_time.second) | password_hash('sha512') }}"
+    uid: 29999
+    comment: "OEM Configuration (temporary user)"
+
+- name: Install OEM Packages (Ubuntu)
+  apt:
+    name: "{{ os[release].oem }}^"
+    state: present
+
+- name: Set slideshow images
+  when: os[release].oem_slideshow is defined
+  replace:
+    path: "{{ item.file }}"
+    regexp: "{{ item.prefix }}-slideshow-ubuntu"
+    replace: "{{ item.prefix }}-{{ os[release].oem_slideshow }}"
+  loop:
+  - file: /usr/lib/ubiquity/plugins/ubi-usersetup.py
+    prefix: oem-config
+  - file: /usr/sbin/oem-config-remove-gtk
+    prefix: oem-config
+  - file: /usr/sbin/oem-config-remove-gtk
+    prefix: ubiquity
+
+- name: Create installer log directory
+  file:
+    path: /var/log/installer
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create installer log
+  file:
+    path: /var/log/installer/debug
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy in OEM SystemD units
+  copy:
+    src: "/usr/lib/oem-config/{{ item }}"
+    dest: "/lib/systemd/system/{{ item }}"
+    remote_src: yes
+    local_follow: no
+    mode: preserve
+  loop:
+  - oem-config.service
+  - oem-config.target
+
+- name: Enable OEM systemd units
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+  loop:
+  - oem-config.service
+  - oem-config.target
+
+- name: Set SystemD default
+  shell: systemctl set-default oem-config.target

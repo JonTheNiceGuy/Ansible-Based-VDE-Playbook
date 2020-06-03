@@ -1,0 +1,86 @@
+---
+os:
+  ubuntu:
+    desktop: ubuntu-desktop
+    confined:
+    - gnome-3-34-1804
+    - gtk-common-themes
+    - snap-store
+    classic: []
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork
+    - oem-config-slideshow-ubuntu
+    configure_gnome_desktop: true
+
+  "ubuntu-mate":
+    desktop: ubuntu-mate-desktop
+    confined: []
+    classic:
+    - ubuntu-mate-welcome
+    - software-boutique
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork
+    - oem-config-slideshow-ubuntu-mate
+    oem_slideshow: oem-config-slideshow-ubuntu-mate
+    configure_gnome_desktop: true
+
+  "ubuntu-budgie":
+    desktop: ubuntu-budgie-desktop
+    confined: []
+    classic:
+    - ubuntu-budgie-welcome
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork
+    - oem-config-slideshow-ubuntu-budgie
+    oem_slideshow: oem-config-slideshow-ubuntu-budgie
+
+  "ubuntu-kylin":
+    desktop: ubuntukylin-desktop
+    confined: []
+    classic: []
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork
+
+  "ubuntu-studio":
+    desktop: ubuntustudio-desktop
+    confined: []
+    classic: []
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork
+
+  kubuntu:
+    desktop: kubuntu-desktop
+    confined: []
+    classic: []
+    oem:
+    - oem-config-kde
+    - ubiquity-frontend-kde
+    - ubiquity-ubuntu-artwork
+
+  lubuntu:
+    desktop: lubuntu-desktop
+    confined: []
+    classic: []
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork
+
+  xubuntu:
+    desktop: xubuntu-desktop
+    confined: []
+    classic: []
+    oem:
+    - oem-config-gtk
+    - ubiquity-frontend-gtk
+    - ubiquity-ubuntu-artwork

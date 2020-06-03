@@ -57,11 +57,6 @@
       name: jontheniceguy.install_xrdp
     when: install_xrdp | default(true)
 
-  - name: Setup Guacamole
-    include_role:
-      name: mohclips.guacamole_jumpserver
-    when: install_guacamole | default(false)
-
   - name: Setup VSCode
     include_role:
       name: jontheniceguy.install_vscode
