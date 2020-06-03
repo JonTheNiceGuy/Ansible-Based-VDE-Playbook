@@ -50,7 +50,9 @@
 
   - name: Setup desktop environment
     include_role:
-      name: jontheniceguy.install_mate_desktop_vde
+      name: jontheniceguy.install_desktop_vde
+    vars:
+      release: ubuntu
 
   - name: Setup XRDP
     include_role:
