@@ -24,6 +24,7 @@
         {%- endif -%}
       append: yes
       skeleton: /etc/skel/
+      shell: /bin/bash
       password: "{{ user_password | password_hash('sha512') }}"
       home: "/home/{{ vde_user }}"
       comment: "{{ vde_user_name }}"
@@ -68,6 +69,11 @@
     include_role:
       name: jontheniceguy.install_virtualbox_and_vagrant
     when: install_vagrant | default(false)
+
+  - name: Setup KeePassXC
+    include_role:
+      name: jontheniceguy.install_keepassxc
+    when: install_keepassxc | default(true)
 
   # These two items are based on
   # https://www.mydailytutorials.com/ansible-delete-multiple-files-directories-ansible/

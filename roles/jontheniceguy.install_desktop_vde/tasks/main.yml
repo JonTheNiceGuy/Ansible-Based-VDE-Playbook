@@ -22,11 +22,11 @@
   args:
     warn: false
 
-# - name: Fix colord issue
-#   when: os[release].fix_colord | default(false)
-#   copy:
-#     src: ../files/45-allow.colord.pkla
-#     dest: /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla
+- name: Fix colord issue
+  when: os[release].fix_colord | default(false)
+  copy:
+    src: ../files/45-allow.colord.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla
 
 - name: Setup desktop script
   when:
@@ -45,7 +45,7 @@
   shell: dbus-launch --exit-with-session bash /tmp/gnome_desktop_settings
   register: _result
   until: _result.rc == 0
-  retries: 240 # retry X times
+  retries: 5 # retry X times
   delay: 5 # pause for X sec b/w each call
 
 - name: Run OEM steps

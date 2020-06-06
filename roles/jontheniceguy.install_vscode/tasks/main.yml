@@ -1,7 +1,7 @@
 ---
 - name: Load Ubuntu tasks
   when: ansible_os_family == 'Debian'
-  include_tasks: ubuntu.yml
+  include_tasks: debian.yml
 
 - name: Load Fedora tasks
   when: ansible_os_family == 'RedHat'
