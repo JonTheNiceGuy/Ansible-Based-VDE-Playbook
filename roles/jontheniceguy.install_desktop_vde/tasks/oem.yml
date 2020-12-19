@@ -21,7 +21,7 @@
 
 - name: Install OEM Packages (Ubuntu)
   apt:
-    name: "{{ os[release].oem }}^"
+    name: "{{ os[release].oem }}"
     state: present
 
 - name: Set slideshow images
