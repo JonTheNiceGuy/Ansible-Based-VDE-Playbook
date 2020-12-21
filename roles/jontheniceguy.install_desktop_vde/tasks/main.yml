@@ -3,6 +3,12 @@
   when: ansible_distribution == 'Ubuntu'
   shell: "apt update && apt install -y {{ os[release].desktop }}^"
 
+- name: Install Extra apps
+  when: ansible_distribution == 'Ubuntu'
+  apt:
+    name: "{{ os[release].apt | default([]) }}"
+    present: true
+
 - name: Install Classic Snaps (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
   snap:

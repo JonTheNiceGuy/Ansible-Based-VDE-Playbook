@@ -7,12 +7,13 @@ os:
     - gtk-common-themes
     - snap-store
     classic: []
+    apt:
+    - gnome-tweak-tool
     oem:
     - oem-config-gtk
     - ubiquity-frontend-gtk
     - ubiquity-ubuntu-artwork
     - oem-config-slideshow-ubuntu
-    configure_gnome_desktop: false
 
   "ubuntu-mate":
     desktop: ubuntu-mate-desktop
@@ -26,7 +27,6 @@ os:
     - ubiquity-ubuntu-artwork
     - oem-config-slideshow-ubuntu-mate
     oem_slideshow: oem-config-slideshow-ubuntu-mate
-    configure_gnome_desktop: true
 
   "ubuntu-budgie":
     desktop: ubuntu-budgie-desktop

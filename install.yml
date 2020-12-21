@@ -53,7 +53,7 @@
     include_role:
       name: jontheniceguy.install_desktop_vde
     vars:
-      release: ubuntu
+      release: "{{ distro | default('ubuntu') }}"
 
   - name: Setup XRDP
     include_role:
@@ -89,3 +89,6 @@
     loop: "{{ crash_files.files }}"
     loop_control:
       label: "{{ item.path }}"
+
+  - name: Execute reboot
+    shell: /usr/sbin/shutdown -r now &
