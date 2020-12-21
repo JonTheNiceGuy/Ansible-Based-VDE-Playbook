@@ -22,11 +22,17 @@
   args:
     warn: false
 
+- name: Fix sudo issue
+  when: os[release].fix_sudo | default(false)
+  copy:
+    src: ../files/10-disable-passwords.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/10-disable-passwords.pkla
+
 - name: Fix colord issue
   when: os[release].fix_colord | default(false)
   copy:
-    src: ../files/45-allow.colord.pkla
-    dest: /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla
+    src: ../files/45-allow-colord.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
 
 - name: Setup desktop script
   when:

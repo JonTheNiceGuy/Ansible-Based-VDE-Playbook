@@ -12,7 +12,7 @@ os:
     - ubiquity-frontend-gtk
     - ubiquity-ubuntu-artwork
     - oem-config-slideshow-ubuntu
-    configure_gnome_desktop: true
+    configure_gnome_desktop: false
 
   "ubuntu-mate":
     desktop: ubuntu-mate-desktop

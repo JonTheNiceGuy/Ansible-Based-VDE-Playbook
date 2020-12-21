@@ -73,7 +73,7 @@
   - name: Setup KeePassXC
     include_role:
       name: jontheniceguy.install_keepassxc
-    when: install_keepassxc | default(true)
+    when: install_keepassxc | default(false)
 
   # These two items are based on
   # https://www.mydailytutorials.com/ansible-delete-multiple-files-directories-ansible/
