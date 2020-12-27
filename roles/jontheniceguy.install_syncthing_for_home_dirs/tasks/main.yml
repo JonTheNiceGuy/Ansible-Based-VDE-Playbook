@@ -1,0 +1,74 @@
+---
+- name: Add Syncthing Key
+  apt_key:
+    url: https://syncthing.net/release-key.txt
+
+- name: Add Syncthing Repo
+  apt_repository:
+    repo: "deb https://apt.syncthing.net/ syncthing stable"
+
+- name: Install Syncthing
+  apt:
+    name: syncthing
+    state: latest
+
+- name: Install BindFS
+  when: install_bindfs
+  apt:
+    name: bindfs
+    state: present
+
+- name: Create Syncthing Root Config Path
+  loop:
+  - /root/.config
+  - /root/.config/syncthing
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  notify: Restart Syncthing service
+
+- name: Setup Syncthing Root Account
+  when: syncthing_folders is defined and syncthing_devices is defined
+  template:
+    dest: /root/.config/syncthing/config.xml
+    src: config.xml.j2
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart Syncthing service
+
+- name: Create Syncthing certificate and key
+  when: syncthing_key is defined and syncthing_cert is defined
+  copy:
+    dest: "/root/.config/syncthing/{{ item.file }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    content: "{{ item.content }}"
+  loop_control:
+    label: "{{ item.label }}"
+  loop:
+  - label: Certificate
+    file: cert.pem
+    mode: '0664'
+    content: "{{ syncthing_cert }}"
+  - label: Key
+    file: key.pem
+    mode: '0600'
+    content: "{{ syncthing_key }}"
+  notify: Restart Syncthing service
+
+- name: Create bindfs mounts
+  template:
+    dest: "/etc/systemd/system/{{ item.value.target[1:] | regex_replace('/', '-') }}.mount"
+    src: bindfs.mount.j2
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Start all bindfs mounts
+  register: bindfs_mounts
+
+- debug: var=bindfs_mounts

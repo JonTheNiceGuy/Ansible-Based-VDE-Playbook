@@ -7,7 +7,7 @@
   when: ansible_distribution == 'Ubuntu'
   apt:
     name: "{{ os[release].apt | default([]) }}"
-    present: true
+    state: present
 
 - name: Install Classic Snaps (Ubuntu)
   when: ansible_distribution == 'Ubuntu'

@@ -1,0 +1,8 @@
+- name: Restart Syncthing service
+  systemd:
+    name: syncthing@root
+    enabled: true
+    state: restarted
+
+- name: Start all bindfs mounts
+  shell: find /etc/systemd/system/*.mount -exec systemctl enable --now $(basename '{}') \;

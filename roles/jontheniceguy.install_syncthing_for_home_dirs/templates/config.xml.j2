@@ -1,0 +1,26 @@
+<configuration version="32">
+{% set ns=namespace(device_keys=[]) %}
+{% for device in syncthing_devices | default({}) | dict2items %}
+{% set ns.device_keys = ns.device_keys + [device.key] %}
+{% endfor %}
+{% for folder in syncthing_folders | default({}) | dict2items %}
+    <folder id="{{ folder.key }}" label="{{ folder.value.label | default(folder.key) }}" path="{{ folder.value.path | default(folder.value.root | default(syncthing_folder_root | default(ansible_user_dir | default('/tmp/'))) ~ '/' ~ folder.key) }}" type="{{ folder.value.type | default('sendreceive') }}" rescanIntervalS="{{ folder.value.rescan | default('3600') }}" fsWatcherEnabled="{{ folder.value.watcher | default('true') }}" fsWatcherDelayS="{{ folder.value.watcher_delay | default('10') }}" ignorePerms="{{ folder.value.ignore_perms | default('false') }}" autoNormalize="{{ folder.value.normalize | default('true') }}">
+        <filesystemType>{{ folder.value.fsType | default('basic') }}</filesystemType>
+{% for device in folder.value.devices | default(ns.device_keys | default([]) ) %}
+        <device id="{{ device }}" introducedBy="{{ syncthing_devices[device].introduced | default('') }}"></device>
+{% endfor %}
+    </folder>
+{% endfor %}
+{% for device in syncthing_devices | default({}) | dict2items %}
+    <device id="{{ device.key }}" name="{{ device.value.name | default(device.key) }}" compression="{{ device.value.compression | default('metadata') }}" introducer="{{ device.value.introducer | default('false') }}" skipIntroductionRemovals="{{ device.value.introduceRemoval | default('false') }}" introducedBy="{{ device.value.introduced | default('') }}">
+        <address>{{ device.value.address | default('dynamic') }}</address>
+        <paused>{{ device.value.paused | default('false') }}</paused>
+        <autoAcceptFolders>{{ device.value.acceptFolders | default('false') }}</autoAcceptFolders>
+        <maxSendKbps>0</maxSendKbps>
+        <maxRecvKbps>0</maxRecvKbps>
+        <maxRequestKiB>0</maxRequestKiB>
+    </device>
+{% endfor %}
+    <gui enabled="true" tls="true" debugging="false"></gui>
+    <ldap></ldap>
+</configuration>

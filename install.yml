@@ -1,6 +1,11 @@
 ---
 - hosts: localhost
-  tasks:
+  tasks:  
+  - name: Setup Syncthing
+    include_role:
+      name: jontheniceguy.install_syncthing_for_home_dirs
+    when: install_syncthing | default(true)
+
   - name: Define user details
     set_fact:
       user_password: "{{ user_password | default(lookup('password', 'pw.user chars=ascii_letters,digits length=12')) }}"
@@ -91,4 +96,5 @@
       label: "{{ item.path }}"
 
   - name: Execute reboot
+    when: reboot_when_done | default(true) | bool
     shell: /usr/sbin/shutdown -r now &
