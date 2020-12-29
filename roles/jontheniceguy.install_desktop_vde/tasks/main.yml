@@ -13,7 +13,7 @@
 
 - name: Install Packages (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
-  shell: "apt update && apt install -y {{ os[release].desktop }}^"
+  shell: "apt update && DEBIAN_FRONTEND=noninteractive apt install -yq {{ os[release].desktop }}^"
 
 - name: Install Extra apps
   when: ansible_distribution == 'Ubuntu'
