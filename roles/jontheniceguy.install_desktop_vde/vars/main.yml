@@ -69,7 +69,7 @@ os:
     debconf:
     - name: encfs
       question: encfs/security-information
-      type: error
+      type: seen
 
   lubuntu:
     desktop: lubuntu-desktop
