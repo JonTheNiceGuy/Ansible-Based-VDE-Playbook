@@ -1,14 +1,14 @@
 ---
 - name: Preseed some debconf values
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' and item.name is defined and item.question is defined and item.type is defined and item.value is defined
   debconf:
     name: "{{ item.name }}"
-    question: "{{ item.question | default(omit) }}"
-    vtype: "{{ item.type | default(omit) }}"
-    value: "{{ item.value | default('') }}"
+    question: "{{ item.question }}"
+    vtype: "{{ item.type }}"
+    value: "{{ item.value }}"
   loop: "{{ os[release].debconf | default([]) }}"
   loop_control:
-    label: "{{ item.question | default(item.name) }}"
+    label: "{{ item.question }}"
   no_log: True
 
 - name: Install Packages (Ubuntu)
