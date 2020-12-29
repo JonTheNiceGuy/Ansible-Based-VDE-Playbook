@@ -80,6 +80,11 @@
       name: jontheniceguy.install_keepassxc
     when: install_keepassxc | default(false)
 
+  - name: Setup KryptCo
+    include_role:
+      name: jontheniceguy.install_kryptco
+    when: install_kryptco | default(true)
+
   # These two items are based on
   # https://www.mydailytutorials.com/ansible-delete-multiple-files-directories-ansible/
   - name: Find files in /var/crash

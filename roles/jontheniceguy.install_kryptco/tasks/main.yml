@@ -1,0 +1,14 @@
+---
+- name: Add KryptCo Key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: C4A05888A1C4FA02E1566F859F2A29A569653940
+
+- name: Add KryptCo Repo
+  apt_repository:
+    repo: "deb http://kryptco.github.io/deb beta beta"
+
+- name: Install KryptCo
+  apt:
+    name: kr
+    state: latest
