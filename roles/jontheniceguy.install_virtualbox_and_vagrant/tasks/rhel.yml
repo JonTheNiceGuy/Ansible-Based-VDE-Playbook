@@ -9,6 +9,15 @@
     repo_gpgcheck: yes
     gpgkey: https://www.virtualbox.org/download/oracle_vbox.asc
 
+- name: Add HashiCorp Repository
+  yum_repository:
+    name: hashicorp
+    description: Hashicorp Stable - $basearch
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+
 - name: Install virtualbox
   dnf:
     name:
@@ -25,5 +34,5 @@
 
 - name: Install Vagrant
   dnf:
-    name: "https://releases.hashicorp.com/vagrant/{{ vagrant_versions }}/vagrant_{{ vagrant_versions }}_x86_64.rpm"
+    name: "vagrant"
     state: present
