@@ -70,5 +70,8 @@
     mode: '0644'
   notify: Start all bindfs mounts
   register: bindfs_mounts
+  loop: "{{ syncthing_folders | default({}) | dict2items }}"
+  loop_control:
+    label: "{{ item.value.target }}"
 
 - debug: var=bindfs_mounts
