@@ -5,7 +5,7 @@
     name: "{{ item.name }}"
     question: "{{ item.question | default(omit) }}"
     vtype: "{{ item.type | default(omit) }}"
-    value: "{{ item.value | default(omit) }}"
+    value: "{{ item.value | default('') }}"
   loop: "{{ os[release].debconf | default([]) }}"
   loop_control:
     label: "{{ item.question | default(item.name) }}"

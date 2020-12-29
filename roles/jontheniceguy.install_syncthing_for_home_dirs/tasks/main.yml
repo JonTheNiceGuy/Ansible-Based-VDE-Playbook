@@ -74,4 +74,5 @@
   loop_control:
     label: "{{ item.value.target }}"
 
-- debug: var=bindfs_mounts
+- name: Flush Handlers
+  meta: flush_handlers
