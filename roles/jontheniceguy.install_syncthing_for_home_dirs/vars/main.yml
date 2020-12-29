@@ -1,5 +1,5 @@
 install_bindfs: |
-  {% set ns = namespace(bindfs=false)}
+  {% set ns = namespace(bindfs=false) %}
   {% for folder in syncthing_folders | default({}) | dict2items %}
     {% if folder.value.target is defined %}
       {% set ns.bindfs = true %}
