@@ -4,7 +4,7 @@
     name: xz-utils
     state: present
   register: apt_action
-  retry: 100
+  retries: 100
   until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
 
 - name: Install VSCode
@@ -12,5 +12,5 @@
     deb: https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable
     state: present
   register: apt_action
-  retry: 100
+  retries: 100
   until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
