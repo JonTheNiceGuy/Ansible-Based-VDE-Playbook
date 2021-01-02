@@ -1,6 +1,11 @@
 ---
 - name: Preseed some debconf values
-  when: ansible_distribution == 'Ubuntu' and item.name is defined and item.question is defined and item.type is defined and item.value is defined
+  when:
+  - ansible_distribution == 'Ubuntu'
+  - item.name is defined
+  - item.question is defined
+  - item.type is defined
+  - item.value is defined
   debconf:
     name: "{{ item.name }}"
     question: "{{ item.question }}"
