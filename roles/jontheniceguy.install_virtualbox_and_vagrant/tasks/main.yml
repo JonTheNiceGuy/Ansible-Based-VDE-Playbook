@@ -10,7 +10,7 @@
   when: ansible_os_family == 'RedHat'
   include_tasks: rhel.yml
 
-- name: Install Vagrant plugins
-  shell: "sudo -u {{ vde_user }} vagrant plugin install {{ item }}"
-  loop:
-  - vagrant-cachier
+# - name: Install Vagrant plugins
+#   shell: "sudo -u {{ vde_user }} vagrant plugin install {{ item }}"
+#   loop:
+#   - vagrant-cachier
