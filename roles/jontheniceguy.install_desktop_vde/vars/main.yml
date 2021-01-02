@@ -69,6 +69,7 @@ os:
     debconf:
     - name: encfs
       question: encfs/security-information
+      value: ""
       type: seen
 
   lubuntu:
