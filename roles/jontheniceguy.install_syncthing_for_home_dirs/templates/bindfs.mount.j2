@@ -6,7 +6,7 @@ After=syncthing@root.service
 What={{ item.value.path }}
 Where={{ item.value.target }}
 Type=fuse.bindfs
-Options=force-user={{ item.value.owner }},force-group={{ item.value.group }},perms=0644:ugo+D
+Options=force-user={{ item.value.owner }},force-group={{ item.value.group }},perms=0600:ugo+D
 
 [Install]
 WantedBy=multi-user.target
