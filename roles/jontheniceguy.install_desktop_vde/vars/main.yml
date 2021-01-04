@@ -66,11 +66,6 @@ os:
     - oem-config-kde
     - ubiquity-frontend-kde
     - ubiquity-ubuntu-artwork
-    debconf:
-    - name: encfs
-      question: encfs/security-information
-      value: ""
-      type: seen
 
   lubuntu:
     desktop: lubuntu-desktop

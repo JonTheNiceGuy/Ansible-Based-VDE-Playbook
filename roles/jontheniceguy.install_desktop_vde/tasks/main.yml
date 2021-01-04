@@ -1,21 +1,4 @@
 ---
-- name: Preseed some debconf values
-  when:
-  - ansible_distribution == 'Ubuntu'
-  - item.name is defined
-  - item.question is defined
-  - item.type is defined
-  - item.value is defined
-  debconf:
-    name: "{{ item.name }}"
-    question: "{{ item.question }}"
-    vtype: "{{ item.type }}"
-    value: "{{ item.value }}"
-  loop: "{{ os[release].debconf | default([]) }}"
-  loop_control:
-    label: "{{ item.question }}"
-  no_log: True
-
 - name: Install Packages (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
   shell: "apt update && DEBIAN_FRONTEND=noninteractive apt install -yq {{ os[release].desktop }}^"
