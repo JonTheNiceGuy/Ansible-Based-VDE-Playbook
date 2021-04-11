@@ -9,7 +9,7 @@
 
 - name: Install VSCode
   apt:
-    deb: https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable
+    deb: https://update.code.visualstudio.com/latest/linux-deb-x64/stable
     state: present
   register: apt_action
   retries: 100
