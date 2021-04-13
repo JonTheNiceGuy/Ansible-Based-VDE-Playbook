@@ -36,12 +36,36 @@
   copy:
     src: ../files/10-disable-passwords.pkla
     dest: /etc/polkit-1/localauthority/50-local.d/10-disable-passwords.pkla
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Fix Network Manager issue
+  when: os[release].fix_network_manager | default(false)
+  copy:
+    src: ../files/50-allow-network-manager.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/50-allow-network-manager.pkla
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: Fix colord issue
   when: os[release].fix_colord | default(false)
   copy:
     src: ../files/45-allow-colord.pkla
     dest: /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Fix Package Management issue
+  when: os[release].fix_package_management | default(false)
+  copy:
+    src: ../files/46-allow-update-repo.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/46-allow-update-repo.pkla
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: Setup desktop script
   when:

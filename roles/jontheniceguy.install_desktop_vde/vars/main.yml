@@ -66,6 +66,9 @@ os:
     - oem-config-kde
     - ubiquity-frontend-kde
     - ubiquity-ubuntu-artwork
+    fix_sudo: true
+    fix_network_manager: true
+    fix_package_management: true
 
   lubuntu:
     desktop: lubuntu-desktop
