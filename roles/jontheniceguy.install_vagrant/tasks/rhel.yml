@@ -1,0 +1,14 @@
+---
+- name: Add HashiCorp Repository
+  yum_repository:
+    name: hashicorp
+    description: Hashicorp Stable - $basearch
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+
+- name: Install Vagrant
+  dnf:
+    name: "vagrant"
+    state: present

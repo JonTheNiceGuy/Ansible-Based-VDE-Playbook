@@ -1,0 +1,19 @@
+---
+- name: Add Docker Key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+
+- name: Add Docker-CE Repo
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+
+- name: Install Docker
+  apt:
+    name:
+    - docker-ce 
+    - docker-ce-cli
+    - containerd.io
+    state: latest
+  register: apt_action
+  retries: 100
+  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)

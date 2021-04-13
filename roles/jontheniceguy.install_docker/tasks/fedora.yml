@@ -1,0 +1,17 @@
+---
+- name: Add Docker-CE Repository
+  yum_repository:
+    name: Docker-CE
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/fedora/gpg
+
+- name: Install Docker
+  dnf:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present

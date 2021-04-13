@@ -4,29 +4,13 @@
     url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
     id: B9F8D658297AF3EFC18D5CDFA2F683C52980AECF
 
-- name: Add Hashicorp Key
-  apt_key:
-    url: https://apt.releases.hashicorp.com/gpg
-
 - name: Add VirtualBox Repo
   apt_repository:
     repo: "deb https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
 
-- name: Add HashiCorp Repo
-  apt_repository:
-    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
-
 - name: Install VirtualBox
   apt:
     name: "virtualbox-{{ virtualbox_versions }}"
-    state: latest
-  register: apt_action
-  retries: 100
-  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
-
-- name: Install Vagrant
-  apt:
-    name: vagrant
     state: latest
   register: apt_action
   retries: 100

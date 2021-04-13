@@ -1,0 +1,11 @@
+---
+- name: Get versions
+  include_tasks: version.yml
+
+- name: Load Debian/Ubuntu tasks
+  when: ansible_os_family == 'Debian'
+  include_tasks: debian.yml
+
+- name: Load RHEL/CentOS/Fedora tasks
+  when: ansible_os_family == 'RedHat'
+  include_tasks: rhel.yml

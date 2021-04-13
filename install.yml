@@ -70,10 +70,20 @@
       name: jontheniceguy.install_vscode
     when: install_vscode | default(false)
 
-  - name: Setup Virtualbox and Vagrant
+  - name: Setup Virtualbox
     include_role:
-      name: jontheniceguy.install_virtualbox_and_vagrant
+      name: jontheniceguy.install_virtualbox
+    when: install_virtualbox | default(false)
+
+  - name: Setup Vagrant
+    include_role:
+      name: jontheniceguy.install_vagrant
     when: install_vagrant | default(false)
+
+  - name: Setup Docker
+    include_role:
+      name: jontheniceguy.install_docker
+    when: install_docker | default(false)
 
   - name: Setup KeePassXC
     include_role:
