@@ -5,7 +5,7 @@ pki:
 
 static_host_map:
 {% for lighthouse in nebula_lighthouses | default([]) %}
-  "{{ lighthouse.nebula_ip }}": {% if lighthouse.public_ips | default('') | size == 0 %}[]{% endif %}
+  "{{ lighthouse.nebula_ip }}": {% if lighthouse.public_ips | default('') | length == 0 %}[]{% endif %}
 {% for public_ip in lighthouse.public_ips | default([]) %}
   - "{{ public_ip }}"
 {% endfor %}
@@ -25,7 +25,7 @@ listen:
   ports: {{ nebula_port | default('4242') }}
 
 punchy:
-  punch: true{% if nebula_local_range | default('') | size > 0 %}
+  punch: true{% if nebula_local_range | default('') | length > 0 %}
 
 local_range: "{{ nebula_local_range }}"{% endif %}
 

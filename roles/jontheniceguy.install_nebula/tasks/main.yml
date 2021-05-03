@@ -48,7 +48,7 @@
     owner: root
     group: root
     mode: "0600"
-  when: item.value | size > 0
+  when: item.value | length > 0
   loop:
   - key: ca.crt
     value: "{{ nebula_ca | default('') }}"
