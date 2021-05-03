@@ -6,6 +6,7 @@ pki:
 static_host_map:
 {% for lighthouse in nebula_lighthouses | default([]) %}
   "{{ lighthouse.nebula_ip }}": {% if lighthouse.public_ips | default('') | length == 0 %}[]{% endif %}
+
 {% for public_ip in lighthouse.public_ips | default([]) %}
   - "{{ public_ip }}"
 {% endfor %}
@@ -15,6 +16,7 @@ lighthouse:
   am_lighthouse: {{ nebula_am_lighthouse | default('false') }}
   interval: 60
   hosts: {% if nebula_am_lighthouse | default('false') != 'false' %}[]{% else %}
+
 {% for lighthouse in nebula_lighthouses | default([]) %}
   - "{{ lighthouse.nebula_ip }}"
 {% endfor %}
