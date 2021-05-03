@@ -58,6 +58,8 @@
     value: "{{ nebula_key | default('') }}"
   - key: ca.crt
     value: "{{ nebula_ca | default('') }}"
+  loop_control:
+    label: "{{ item.key }}"
   notify: Restart Nebula
 
 - name: Create Nebula Config File
