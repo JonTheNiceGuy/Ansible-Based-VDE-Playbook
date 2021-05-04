@@ -54,6 +54,11 @@
       name: "*"
       state: latest
 
+  - name: Install Nebula
+    include_role:
+      name: jontheniceguy.install_nebula
+    when: install_nebula | default(true)
+
   - name: Setup desktop environment
     include_role:
       name: jontheniceguy.install_desktop_vde
