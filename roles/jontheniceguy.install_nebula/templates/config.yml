@@ -24,12 +24,29 @@ lighthouse:
 
 listen:
   host: {{ nebula_host | default('0.0.0.0') }}
-  ports: {{ nebula_port | default('4242') }}
+  port: {{ nebula_port | default('4242') }}
 
 punchy:
-  punch: true{% if nebula_local_range | default('') | length > 0 %}
+  punch: true
+  respond: true
+  delay: 1s
 
-local_range: "{{ nebula_local_range }}"{% endif %}
+sshd:
+  enabled: true
+  listen: 127.0.0.1:2222
+  host_key: /etc/ssh/ssh_host_ed25519_key
+  authorized_users: {% if nebula_ssh_users | default('') | length == 0 %}[]{% else %}
+
+{% for nebula_ssh_user in nebula_ssh_users | default([]) %}
+    - user: "{{ nebula_ssh_user.username }}"
+      keys: {% if nebula_ssh_user.keys | default('') | length == 0 %}[]{% else %}
+
+{% for nebula_key in nebula_ssh_user.keys | default([]) %}
+        - "{{ nebula_key }}"
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
 
 tun:
   disabled: {{ nebula_tun_disabled | default('false') }}
