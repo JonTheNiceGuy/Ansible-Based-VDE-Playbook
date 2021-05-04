@@ -1,0 +1,3 @@
+[submodule "roles/jontheniceguy.install_nebula"]
+	path = roles/jontheniceguy.install_nebula
+	url = https://github.com/JonTheNiceGuy/install_nebula.git
